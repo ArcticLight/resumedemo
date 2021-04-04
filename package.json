@@ -1,0 +1,24 @@
+{
+  "name": "resumedemo",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "exports": "./index.js",
+  "scripts": {
+    "start": "./index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arcticlight/resumedemo.git"
+  },
+  "keywords": [],
+  "author": "ArcticLight <arcticlight@arcticlight.me>",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/arcticlight/resumedemo/issues"
+  },
+  "homepage": "https://github.com/arcticlight/resumedemo#readme",
+  "devDependencies": {
+    "express": "^4.17.1"
+  }
+}

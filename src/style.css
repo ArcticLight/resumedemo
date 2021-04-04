@@ -1,0 +1,72 @@
+* {
+  box-sizing: border-box;
+}
+html, body, #app {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  width: 100vw;
+  color: rgba(241, 241, 205, 0.9);
+  background: rgb(35, 61, 146);
+  background: linear-gradient(28deg,rgb(12, 48, 90) 0, rgb(6, 77, 124) 100%);
+  overflow: hidden auto;
+}
+
+
+code {
+  color: rgb(199, 160, 62);
+  padding: 0 .1em;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+pre {
+  overflow-x: auto;
+}
+
+.marked {
+  width: 80vw;
+  padding: 0 2em;
+  margin: auto;
+  max-width: 50em;
+  overflow: auto;
+}
+
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2em;
+  width: 100%;
+  background: rgba(0,0,100,.8);
+}
+
+a {
+  color: rgb(163, 233, 162);
+}
+
+ul.navul {
+  flex-grow:1;
+  display:flex;
+  flex-direction:row-reverse;
+  margin: 0;
+  height: 100%;
+  align-items: stretch;
+}
+ul.navul > li {
+  margin-left: 1em;
+  display: flex;
+  background:rgba(255, 255, 255, 0.2);
+}
+
+ul.navul > li:hover {
+  background:rgba(255, 255, 255, 0.4);
+}
+
+ul.navul > li > a {
+  display: block;
+  text-decoration: none;
+  height: 100%;
+  width: 100%;
+  padding: 0 .5em;
+}

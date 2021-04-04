@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ArcticLight's Demos</title>
+  <link rel="stylesheet" href="./src/style.css">
+</head>
+<body>
+  <div id="app"></div>
+  <script type="module">
+    import { html, render, useState, useEffect } from './modules/preact/index.js';
+    import { cancelable } from './src/cancelable.js';
+
+    // Extract error display into a component. Probably should be moved
+    // to src/... instead.
+    function errBar({error, retry}) {
+      if (error) {
+        const m = (error.toString)? error.toString() : error;
+        return html`
+          <p style="color: red">${m}</p>
+          <button onclick=${retry}>Retry</button>
+        `;
+      }
+      return undefined;
+    };
+
+    // Manages showing errors, or the demo after it's loaded.
+    function DemoDisplayer({demos, selected}) {
+      const demo = demos[selected];
+      if (typeof demo === 'object' && demo !== null) {
+        if ('component' in demo) {
+          if (typeof demo.component === 'function') {
+            return html`<${demo.component}/>`;
+          }
+          return html`<div class="marked"><p style="color:red">Error loading demo</p></div>`;
+        } else if ('err' in demo) {
+          let strd = 'An error occurred';
+          if (demo.err.toString && typeof demo.err.toString === 'function') {
+            strd = demo.err.toString();
+          } else {
+            strd = `${demo.err}`;
+          }
+          return html`<div class="marked"><p style="color:red">${strd}</p></div>`;
+        }
+        else {
+          return html`<div class="marked"><p>Loading...</p></div>`;
+        }
+      }
+      return html`<div class="marked"><p style="color:red">Error! (this shouldn't happen)</p></div>`;
+    }
+
+    // List of available demos.
+    const AllDemos = [{
+      id: 'home',
+      name: 'Home',
+    }, {
+      id: 'jstween',
+      name: 'JSTween',
+    }, {
+      id: 'stdfilters',
+      name: 'stdFilters',
+    }, {
+      id: 'dotfriles',
+      name: 'DotFriles',
+    }];
+
+    function App() {
+      const [demos, setDemos] = useState(AllDemos.reduce((a, demo) => ({...a, [demo.id]: demo}), {}));
+      const [selectedDemo, setSelected] = useState(AllDemos[0].id);
+
+      // Only once: dynamically load the available demos' components.
+      //
+      // Cleanup cancels the loads, but this _shouldn't_ be relevant.
+      // Cleanup at the top level here probably means a navigation away
+      // from this page, at which point cleanup is moot anyway.
+      useEffect(() => {
+        const cleanupArray = AllDemos.map((d) => {
+          const { id } = d;
+          const [cancel, casSetDemo] = cancelable(setDemos);
+          (import(`./demos/${id}/demo.js`)).then(
+            (success) => {
+              casSetDemo((demos) => ({...demos, [id]: {...demos[id], component: success.demo}}));
+            },
+            (err) => {
+              casSetDemo((demos) => ({...demos, [id]: {...demos[id], err}}));
+            }
+          );
+
+          return cancel;
+        });
+        return () => {
+          cleanupArray.forEach((cancel) => cancel());
+        };
+      }, []);
+      return html`
+        <!-- Top-level nav produces the navbar dynamically -->
+        <nav class="nav" style="display:flex;z-index:1;">
+          <h1 style="display:inline-block;font-size:1rem;margin:.5em;">Demos</h1>
+          <ul class='navul'>
+            ${AllDemos.map(({id, name}) => (
+              html`<li key=${id}><a href="#" onclick=${() => setSelected(id)}>${name}</a></li>`
+            ))}
+          </ul>
+        </nav>
+        <div style="margin-top: 8em"></div>
+
+        <!-- Show the demo! -->
+        <${DemoDisplayer} demos=${demos} selected=${selectedDemo}/>
+      `;
+    }
+
+    render(html`<${App} />`, document.getElementById('app'));
+  </script>
+</body>
+</html>

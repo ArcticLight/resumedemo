@@ -1,0 +1,42 @@
+{
+  "name": "jstween",
+  "version": "2.0.0",
+  "description": "A simple, powerful, expressive animations library",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "keywords": [
+    "tween",
+    "animation",
+    "animations",
+    "timeline",
+    "timelines"
+  ],
+  "type": "module",
+  "exports": {
+    ".": "./src/index.js",
+    "./plugins/*": "./src/plugins/*.js"
+  },
+  "bugs": {
+    "url": "https://github.com/ArcticLight/jstween/issues",
+    "email": "arcticlight@arcticlight.me"
+  },
+  "scripts": {
+    "test": "echo \"error: no test specified\"; exit 1"
+  },
+  "author": "ArcticLight <arcticlight@arcticlight.me> (https://arcticlight.me)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ArcticLight/jstween.git"
+  },
+  "files": [
+    "src",
+    "LICENSE",
+    "EASING-LICENSE",
+    "README.md"
+  ],
+  "devDependencies": {
+    "typescript": "4.0.3"
+  }
+}
